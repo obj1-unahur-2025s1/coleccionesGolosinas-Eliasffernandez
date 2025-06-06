@@ -1,0 +1,75 @@
+import autosFormula.*
+
+
+describe "test autos y pilotos Formula"{
+    
+    method initialize(){
+        formulaF.agregarAutos([vortex,nebula,quantum])
+        formulaF.agregarPilotos([kaelVarela,novaIshari,axelDraven])
+    }
+    
+    test "al usar vortex 3 veces seguidas ya no se puede usar sin cargar la bateria"{
+        formulaF.usarAutoEnUnEntrenamiento(vortex, novaIshari)
+        formulaF.usarAutoEnUnEntrenamiento(vortex, novaIshari)
+        formulaF.usarAutoEnUnEntrenamiento(vortex, novaIshari)
+        assert.notThat(vortex.puedeUsarse())
+    }
+    test"en el modo intermedio de un piloto obtenga 2 de experiencia al manejar Nebula"{
+        nebula.establecerModoConduccion(intermedio)
+        formulaF.usarAutoEnUnEntrenamiento(nebula, novaIshari)
+        assert.equals(2, novaIshari.experiencia())
+    }
+    
+    test"axel draven solo puede hacer 5 pruebas con autos como maximo"{
+        assert.equals(0, axelDraven.cantidadAutosProbados())
+        assert.that(axelDraven.puedeUsarlo(nebula))
+        formulaF.usarAutoEnUnEntrenamiento(nebula, axelDraven)
+        formulaF.usarAutoEnUnEntrenamiento(nebula, axelDraven)
+        formulaF.usarAutoEnUnEntrenamiento(nebula, axelDraven)
+        formulaF.usarAutoEnUnEntrenamiento(nebula, axelDraven)
+        formulaF.usarAutoEnUnEntrenamiento(nebula, axelDraven)
+        assert.equals(5,axelDraven.cantidadAutosProbados())
+        assert.notThat(axelDraven.puedeUsarlo(nebula))
+    }
+    test"kael varela puede al inicio conducir quantum"{
+        assert.that(kaelVarela.puedeUsarlo(quantum))
+    }
+    test"el promedio de experiencia de los pilotos"{
+        formulaF.usarAutoEnUnEntrenamiento(vortex, novaIshari)
+        formulaF.usarAutoEnUnEntrenamiento(quantum, axelDraven)
+        formulaF.usarAutoEnUnEntrenamiento(nebula, kaelVarela)
+        assert.that(formulaF.promedioDeExperiencia()) // verficar
+    }
+    test "se pueda verificar si todos los autos estan listo para ser probados"{
+        assert.that(formulaF.todosLosAutosEnCondiciones())
+    }
+    test "cada piloto pueda sentirse realizado segun su definicion personal"{
+        assert.that(kaelVarela.estaCansado)
+        assert.that(kaelVarela.estaFeliz())
+        assert.that(novaIshari.estaFeliz())
+
+    }
+    test "kael se siente realizado luego de conducir todos los autos" {
+    assert.notThat(formulaF.unPilotoRealizado(kaelVarela))
+    formulaF.usarAutoEnUnEntrenamiento(quantum, kaelVarela)
+    kaelVarela.dormir()
+    formulaF.usarAutoEnUnEntrenamiento(quantum, kaelVarela)
+    kaelVarela.dormir()
+    formulaF.usarAutoEnUnEntrenamiento(vortex, kaelVarela)
+    kaelVarela.dormir()
+    formulaF.usarAutoEnUnEntrenamiento(nebula, kaelVarela)
+    assert.that(formulaF.unPilotoRealizadoo(kaelVarela))
+  }
+  test "nova se siente realizado porque condujo el vortex" {
+    assert.notThat(formulaF.unPilotoRealizado(novaIshari))
+    formulaF.usarAutoEnUnEntrenamiento(vortex, novaIshari)
+    assert.that(formulaF.unPilotoRealizado(novaIshari))
+  }
+
+  test "axel se siente realizado luego de conducir cualquier auto" {
+    assert.notThat(formulaF.unPilotoRealizado(axelDraven))
+    formulaF.usarAutoEnUnEntrenamiento(quantum,axelDraven)
+    assert.that(formulaF.unPilotoRealizado(axelDraven))
+  }
+}
+

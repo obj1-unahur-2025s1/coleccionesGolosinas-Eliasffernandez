@@ -1,0 +1,17 @@
+import golosinas.*
+import mariano.*
+
+describe "test de golosinas" {
+  method initialize(){
+
+  }
+
+  test "verificar las golosinas" {
+    assert.equals(40, chocolatin.peso())
+    assert.equals(100, chocolatin.peso())
+    assert.that(pastillaTuttiFrutti.libreGluten())
+    assert.notThat(pastillaTuttiFrutti.libreGluten())
+  }
+
+}
+
